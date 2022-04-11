@@ -32,10 +32,12 @@ def run_expansion_loop(graph,node,models=None):
     '''
         Runs expansion rules according to tableau algorithm.
     '''
+
     if models==None:
         models=[]
     #print(f"\r\nResolving {graph[node]} for {node}\r\n")
     axioms,expanded,consistent,edges=graph[node]
+    # print(axioms)
     while len(axioms["AND"]):
         axiom=axioms["AND"].pop()
         axiom1=axiom.term_a
@@ -88,6 +90,7 @@ def run_expansion_loop(graph,node,models=None):
 
     while len(axioms["ALL"]):
         axiom=axioms["ALL"].pop()
+        # print(axiom)
         name=axiom.name
         axiom1=axiom.concept
         children=edges.setdefault(name)
@@ -148,6 +151,7 @@ def get_models(graph,axiom,individual):
             graph=prepare_graph(graph,namer.get_name())
         for node in graph.keys():
             graph,axiom=prime_graph(graph,axiom,node)
+            # print(graph)
         models=tree_search([graph],list(graph.keys()),0)
     else:
         graph=prepare_graph(graph,individual)

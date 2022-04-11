@@ -25,7 +25,7 @@ def update_axioms(axiom,axiom_dict,label_set,consistent):
     return axiom_dict,label_set,consistent
 
 def create_axioms_struct():
-    return {"AND":set(),"OR":set(),"SOME":set(),"ALL":set()}
+    return {"AND":set(),"OR":set(),"SOME":set(),"ALL":set(), "ROLE": set()}
 
 def run_expansion_loop(graph,node,models=None):
     '''

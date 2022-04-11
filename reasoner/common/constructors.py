@@ -72,6 +72,7 @@ class Role(Symbol):
         super().__init__(name)
         self.name=name
         self.concept=concept
+        self.type= "ROLE"
 
     def __str__(self):
         return self.type+"."+self.name+"."+str(self.concept)

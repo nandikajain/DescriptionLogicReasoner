@@ -38,7 +38,7 @@ class TestWithOntology(unittest.TestCase):
         self.kb.model.debug_print()
 
     def test_inconsistent_kb(self):
-        self.kb.load_from_list(inconsistent_test_kb)
+        self.kb.load_from_list(test1)
         self.kb.run_sat()
         print("KB is.")
         self.kb.print_kb()
@@ -46,7 +46,7 @@ class TestWithOntology(unittest.TestCase):
         self.kb.model.debug_print()
 
     def test_another_kb(self):
-        self.kb.load_from_list(yet_another_kb)
+        self.kb.load_from_list(test3)
         self.kb.run_sat()
         print("KB is.")
         self.kb.print_kb()

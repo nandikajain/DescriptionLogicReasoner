@@ -1,10 +1,8 @@
 import sys 
 sys.path.append('../')
 
-sys.path.append("/home/adityas/Projects/ALC-reasoner/")
-
 from reasoner.knowledgebase.axioms import And,Or,Not,ClassAssertion,ABoxAxiom,RoleAssertion,TBoxAxiom,Subsumption
-from reasoner.common.constructors import Concept,All,Some,Instance
+from reasoner.common.constructors import Concept,All,Some,Instance, Role
 
 
 
@@ -38,4 +36,21 @@ TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological"))),
 TBoxAxiom(Subsumption(Concept("Biological"),Concept("Man"))),
 TBoxAxiom(Subsumption(And(Concept("Machine"),Concept("Man")),Concept("Augmented")))]
 
+test3=[
+TBoxAxiom(Subsumption(Concept("Bird"), Concept("Flies"))),
+TBoxAxiom(Subsumption(Concept("Penguin"), Concept("Bird"))),
+TBoxAxiom(Subsumption(Concept("Penguin"), Not(Concept("Flies")))),
+TBoxAxiom(Subsumption(Concept("Flies"), Not(Concept("Penguin")))),
+ABoxAxiom(ClassAssertion(Concept("Penguin"),Instance("tweety")))
+]
 
+
+test2=[ABoxAxiom(ClassAssertion(Concept("Bird"),Instance("tweety"))),
+TBoxAxiom(Subsumption(Concept("Human"), Some("hasParent", Concept("Human")))),
+ABoxAxiom(ClassAssertion(Concept("Human"),Instance("tweety")) )
+]
+
+test1= [
+ABoxAxiom(ClassAssertion(Concept("Orphan"),Instance("harrypotter"))),
+TBoxAxiom(Subsumption(Concept("Human"), Some("hasParent", Concept("Human")))),
+ABoxAxiom(RoleAssertion(Role("hasParent", Concept("Human")), Instance("harryPotter"), Instance("jamesPotter")))]

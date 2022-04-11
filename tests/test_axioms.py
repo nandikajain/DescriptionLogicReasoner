@@ -5,8 +5,8 @@ import logging
 #logging.basicConfig(level=logging.DEBUG)
 sys.path.append('../')
 
-from reasoner.knowledgebase.axioms import And,Or,Not,ClassAssertion,RoleAssertion,TBoxAxiom,Subsumption
-from reasoner.common.constructors import Concept,All,Some,Instance
+from reasoner.knowledgebase.axioms import And,Or,Not,ClassAssertion,RoleAssertion,TBoxAxiom,Subsumption, Subproposition
+from reasoner.common.constructors import Concept,All,Some,Instance, Role
 
 class TestAxioms(unittest.TestCase):
 
@@ -64,9 +64,12 @@ class TestAxioms(unittest.TestCase):
         self.assertEqual(axiom2,axiom1)
 
     def test_not_inequality(self):
+        A = Concept("Man")
+        B = Not(A)
         axiom1=Not(Concept("Man"))
         axiom2=Not(Concept("Woman"))
         self.assertNotEqual(axiom1,axiom2)
+        self.assertTrue(A, Not(B))
 
     def test_assertion_constructor(self):
         instance=Instance("Aditya")
@@ -91,9 +94,20 @@ class TestAxioms(unittest.TestCase):
     def test_subsumption_axiom(self):
         axiom1=Concept("Man")
         axiom2=Concept("Human")
+        axiom3 = Concept("Man")
         axiom=Subsumption(axiom1,axiom2)
+        axiom_ = Subsumption(axiom2,axiom3)
+        self.assertTrue(Subsumption(axiom1, axiom3))
         self.assertEqual(axiom1,axiom.axiom1)
         self.assertEqual(axiom2,axiom.axiom2)
 
+    def test_subproposition_axiom(self):
+        subprop1 = "hasSon"
+        subprop2 = "hasChild"
+        subprop3 = "hasHuman"
+        axiom = Subproposition(subprop1, subprop2)
+        axiom_ = Subproposition(subprop2, subprop3)
+        self.assertTrue(Subproposition(subprop1, subprop3))
+        
 if __name__=="__main__":
     unittest.main()

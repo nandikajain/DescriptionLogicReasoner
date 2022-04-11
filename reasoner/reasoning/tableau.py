@@ -13,7 +13,6 @@ namer=NodeNameGenerator()
 def update_and_check(label,label_set,consistency):
     if NNF(Not(label)) in label_set:
         consistency=False
-    # print(label)
     label_set.add(label)
     return label_set,consistency
 
@@ -29,15 +28,13 @@ def create_axioms_struct():
     return {"AND":set(),"OR":set(),"SOME":set(),"ALL":set()}
 
 def run_expansion_loop(graph,node,models=None):
-    '''
+    '''\
         Runs expansion rules according to tableau algorithm.
     '''
-
     if models==None:
         models=[]
     #print(f"\r\nResolving {graph[node]} for {node}\r\n")
     axioms,expanded,consistent,edges=graph[node]
-    # print(axioms)
     while len(axioms["AND"]):
         axiom=axioms["AND"].pop()
         axiom1=axiom.term_a
@@ -90,7 +87,6 @@ def run_expansion_loop(graph,node,models=None):
 
     while len(axioms["ALL"]):
         axiom=axioms["ALL"].pop()
-        # print(axiom)
         name=axiom.name
         axiom1=axiom.concept
         children=edges.setdefault(name)
@@ -128,18 +124,22 @@ def is_graph_consistent(graph):
 def is_model_consistent(models):
     return len(list(filter(is_graph_consistent,models)))!=0
 
-def prime_graph(graph,axiom,node):
+def prime_graph(graph,axiom,node,node2=None):
     axioms=graph[node][0]
-    print(graph, axioms,node, "Emd\n" )
     expanded=graph[node][1]
-    # print(expanded)
+    edges=graph[node][3]
+    print(axiom)
     if axiom.type not in axioms.keys():
-        # print(expanded)
-        expanded.add(axiom)
-        # print(expanded)
+        if axiom.type=='ROLE':
+            if  node2!=None:
+                children = edges.setdefault(axiom.name)
+                if children == None:
+                    edges[axiom.name] = set({node2})
+        else:
+
+            expanded.add(axiom)
     else:
         axioms[axiom.type].add(axiom)
-    # print(expanded)
     return graph,axiom
 
 def tree_search(models,node_list,node_index):
@@ -150,18 +150,24 @@ def tree_search(models,node_list,node_index):
         _models+=run_expansion_loop(model,node_list[node_index])
     return tree_search(_models,node_list,node_index+1)
 
-def get_models(graph,axiom,individual):
+def get_models(graph,axiom,individual,ind2=None):
+    print(';;;',axiom)
     if individual=="#ALL":
         if len(graph)==0:
             graph=prepare_graph(graph,namer.get_name())
         for node in graph.keys():
+            # print(axiom)
             graph,axiom=prime_graph(graph,axiom,node)
-            # print(graph)
         models=tree_search([graph],list(graph.keys()),0)
     else:
         graph=prepare_graph(graph,individual)
-        graph,axiom=prime_graph(graph,axiom,individual)
-        # print("HHHHHHHHH",graph)
+        # print(axiom)
+        if axiom.type == 'ROLE' and ind2!=None:
+            graph,axiom=prime_graph(graph,axiom,individual,ind2)
+        else:
+            graph,axiom=prime_graph(graph,axiom,individual)
+
+        # print('!!!!', graph)
         models=run_expansion_loop(graph,individual)
 
     return models

@@ -26,25 +26,26 @@ class Model(object):
         return axiom.definitions,axiom.instance.name
 
     def __split_role_assert(self,axiom):
-        return axiom,(axiom.instance1.name,axiom.instance2.name)
+        return axiom.role,(axiom.instance1.name,axiom.instance2.name)
 
-    def _get_sat_models(self,axiom,individual=None):
+    def _get_sat_models(self,axiom,individual=None,node2=None):
         '''
             Runs tableau on a copy of currently satisfiable models and
             returns satisfiable ones.
         '''
         models=[]
+        print('***',axiom)
         for model in self.models:
             # print(model,axiom,individual)
             # print("AJDVJDBV", model)
-            models+=get_models(model,axiom,individual)
+            models+=get_models(model,axiom,individual,node2)
         return models
 
-    def __process_graph(self,axiom,node=None):
+    def __process_graph(self,axiom,node=None,node2=None):
         '''
             Commits changes in satisfiable graphs.
         '''
-        self.models=self._get_sat_models(axiom,node)
+        self.models=self._get_sat_models(axiom,node,node2)
 
     def __consume_abox_axiom(self,axiom):
         '''
@@ -52,10 +53,14 @@ class Model(object):
         '''
         logger.debug(f"Applying {axiom}")
         axiom,node=self.axiom_split_methods[axiom.type](axiom)
-        if(axiom.type == "R_ASSERT"):
-            self.__process_graph(self.__get_nnf(axiom),node[0])
+        print(',,,',axiom)
+        if(axiom.type == "ROLE"):
+            print('@@@',self.__get_nnf(axiom))
             self.__process_graph(self.__get_nnf(axiom),node[1])
+            self.__process_graph(self.__get_nnf(axiom),node[0],node[1])
+
         else:
+            print('@@@', self.__get_nnf(axiom))
             self.__process_graph(self.__get_nnf(axiom),node)
 
     def __consume_tbox_axiom(self,axiom):
@@ -83,7 +88,7 @@ class Model(object):
         _type=axiom.type
         if _type=="ABOX":
             axiom,node=self.axiom_split_methods[axiom.axiom.type](axiom.axiom)
-
+        print('^^',axiom)
         axiom=self.__get_nnf(axiom)
         return len(self._get_sat_models(axiom,node))!=0
 
@@ -91,6 +96,8 @@ class Model(object):
         '''
             Permanently adds given axiom to the graph.
         '''
+        # print('&&&', axiom)
+
         if axiom.type=="ABOX":
             axiom=axiom.axiom
             self.__consume_abox_axiom(axiom)

@@ -3,6 +3,7 @@ import logging
 logger=logging.getLogger(__name__)
 
 from .axioms import Not
+from .axioms import Not
 from ..common.constructors import Concept
 from ..reasoning.nnf import NNF
 
@@ -23,6 +24,7 @@ class NodeSet(set):
         '''
             Add a single axiom to the Set.
         '''
+        # print('$$$',axiom)
         if axiom not in self:
             logger.debug(f"Adding {axiom} to the NodeSet {self.name}")
             self.add(axiom)

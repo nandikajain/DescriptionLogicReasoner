@@ -72,10 +72,12 @@ class Role(Symbol):
         super().__init__(name)
         self.name=name
         self.type= "ROLE"
+        logger.debug(f"Role {name} initialised")
 
     def __str__(self):
         return self.type+"."+self.name
-
+    def __hash__(self):
+        return hash(str(self.id))
 
 class Some(Role):
     '''

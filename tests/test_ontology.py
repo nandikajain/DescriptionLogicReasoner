@@ -37,21 +37,22 @@ class TestWithOntology(unittest.TestCase):
     #     print("Computed models are.")
     #     self.kb.model.debug_print()
 
-    def test_inconsistent_kb(self):
-        self.kb.load_from_list(sample)
-        self.kb.run_sat()
-        print("KB is.")
-        self.kb.print_kb()
-        print("Computed models are.")
-        self.kb.model.debug_print()
-
-    # def test_another_kb(self):
-    #     self.kb.load_from_list(test3)
+    # def test_inconsistent_kb(self):
+    #     self.kb.load_from_list(sample)
     #     self.kb.run_sat()
     #     print("KB is.")
     #     self.kb.print_kb()
     #     print("Computed models are.")
     #     self.kb.model.debug_print()
+
+
+    def test_another_kb(self):
+        self.kb.load_from_list(test3)
+        self.kb.run_sat()
+        print("KB is.")
+        self.kb.print_kb()
+        print("Computed models are.")
+        self.kb.model.debug_print()
 
 if __name__=="__main__":
     unittest.main()

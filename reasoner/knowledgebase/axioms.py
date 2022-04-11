@@ -129,6 +129,7 @@ class RoleAssertion(Axiom):
 
     def __init__(self,role,instance1,instance2):
         super().__init__("R_ASSERT")
+        # print(role)
         self.role=role
         self.instance1=instance1
         self.instance2=instance2

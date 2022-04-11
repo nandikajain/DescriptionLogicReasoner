@@ -35,7 +35,7 @@ TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological"))),
 TBoxAxiom(Subsumption(Concept("Biological"),Concept("Man"))),
 TBoxAxiom(Subsumption(And(Concept("Machine"),Concept("Man")),Concept("Augmented")))]
 
-test3=[
+test6=[
 TBoxAxiom(Subsumption(Concept("Bird"), Concept("Flies"))),
 TBoxAxiom(Subsumption(Concept("Penguin"), Concept("Bird"))),
 TBoxAxiom(Subsumption(Concept("Penguin"), Not(Concept("Flies")))),
@@ -49,9 +49,22 @@ TBoxAxiom(Subsumption(Concept("Human"), Some("hasParent", Concept("Human")))),
 ABoxAxiom(ClassAssertion(Concept("Human"),Instance("tweety")) )
 ]
 
-test1= [
-ABoxAxiom(ClassAssertion(Concept("Orphan"),Instance("harrypotter"))),
-TBoxAxiom(Subsumption(Concept("Human"), Some("hasParent", Concept("Human")))),
-ABoxAxiom(RoleAssertion(Role("hasParent"), Instance("harryPotter"), Instance("jamesPotter")))]
+# test1= [
+# ABoxAxiom(ClassAssertion(Concept("Orphan"),Instance("harrypotter"))),
+# TBoxAxiom(Subsumption(Concept("Human"), Some("hasParent", Concept("Human"))))]
 
-sample= [ABoxAxiom(RoleAssertion("hasParent", Instance("harryPotter"), Instance("jamesPotter")))]
+test3= [ ABoxAxiom(ClassAssertion(Concept("Orphan"), Instance("harryPotter"))),
+         ABoxAxiom(RoleAssertion(Role("hasParent"), Instance("harryPotter"), Instance("jamesPotter"))),
+TBoxAxiom(Subsumption(Concept("Orphan"), Some("hasParent", Concept("Human")))),
+TBoxAxiom(Subsumption(Concept("Orphan"), And(Concept("Human"),All("hasParent", Not(Concept("Alive")))))),
+ABoxAxiom(ClassAssertion(Not(Concept("Alive")),Instance("jamesPotter"))),
+
+         ]
+
+test4 = [
+    ABoxAxiom(ClassAssertion(Concept("Student"), Instance("aditya"))),
+ABoxAxiom(ClassAssertion(Not(Concept("Eager")), Instance("aditya"))),
+TBoxAxiom(Subsumption(Concept("Student"), Some("Attends", Concept("Lecture")))),
+TBoxAxiom(Subsumption(Concept("Lecture"), Some("AttendedBy", And(Concept("Lecture"), Concept("Lecture"))))),
+
+]

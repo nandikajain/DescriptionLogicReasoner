@@ -89,6 +89,26 @@ class Subsumption(Axiom):
     def __repr__(self):
         return f"ALL {self.axiom1} ARE {self.axiom2}"
 
+
+class Subproposition(Axiom):
+    '''
+        Class for defining subproperties.
+    '''
+
+    def __init__(self,axiom1,axiom2):
+        super().__init__("SUBPROPOSITION")
+        self.axiom1=axiom1
+        self.axiom2=axiom2
+
+    def __hash__(self):
+        return hash(self.type+str(hash(self.axiom1))+str(hash(self.axiom2)))
+
+    def __repr__(self):
+        return f"ALL {self.axiom1} ARE {self.axiom2}"
+
+
+
+
 class ClassAssertion(Axiom):
     '''
         Defines Class assertions/ ABox assertions.
@@ -152,6 +172,26 @@ class TBoxAxiom(Axiom):
 
     def __init__(self,axiom):
         super().__init__("TBOX")
+        self.axiom=axiom
+
+    def __eq__(self,other):
+        return self.axiom==other
+
+    def __hash__(self):
+        return hash(self.type+str(hash(self.axiom)))
+
+    def __str__(self):
+        return str(self.axiom)
+
+    def __repr__(self):
+        return str(self.axiom)
+class RBoxAxiom(Axiom):
+    '''
+        A Wrapper for RBox axioms.
+    '''
+
+    def __init__(self,axiom):
+        super().__init__("RBOX")
         self.axiom=axiom
 
     def __eq__(self,other):

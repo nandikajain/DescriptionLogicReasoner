@@ -10,7 +10,7 @@ import pprint
 
 class Box(NodeSet):
     '''
-        Defines base object for ABox and TBox.
+        Defines base object for ABox and TBox and RBox.
     '''
 
     def __init__(self,name):
@@ -52,6 +52,12 @@ class TBox(Box):
     def __init__(self):
         super().__init__(name="tbox")
 
+class RBox(Box):
+    '''
+        Defines RBox.
+    '''
+    def __init__(self):
+        super().__init__(name="rbox")
 
 class KnowledgeBase(object):
     '''
@@ -61,6 +67,7 @@ class KnowledgeBase(object):
     def __init__(self):
         self.abox=ABox()
         self.tbox=TBox()
+        self.rbox = RBox()
         self.model=Model()
         self.pp=pprint.PrettyPrinter(indent=2)
         logger.debug(f"Knowledge base initialised.")
@@ -71,14 +78,15 @@ class KnowledgeBase(object):
         '''
         if axiom.type=="ABOX":
             self.abox.add_axiom(axiom)
-        else:
+        elif axiom.type=="TBOX":
             self.tbox.add_axiom(axiom)
-
+        elif axiom.type=="RBOX":
+            self.rbox.add_axiom(axiom)
     def init_axioms_list(self):
         '''
             Initialises self.axioms as a list of all axioms in the KB.
         '''
-        self.axioms=self.abox.get_axioms()+self.tbox.get_axioms()
+        self.axioms=self.abox.get_axioms()+self.tbox.get_axioms()+self.rbox.get_axioms()
 
     def add_axioms(self,axiom_list):
         for axiom in axiom_list:
@@ -94,7 +102,7 @@ class KnowledgeBase(object):
         '''
             returns whether the KB contains the given axiom.
         '''
-        return self.abox.contains(axiom) or self.tbox.contains(axiom)
+        return self.abox.contains(axiom) or self.tbox.contains(axiom) or self.rbox.contains(axiom)
 
     def is_consistent(self):
         return self.model.is_consistent()

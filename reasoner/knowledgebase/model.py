@@ -59,6 +59,13 @@ class Model(object):
         logger.debug(f"Applying TBOX axiom {axiom}")
         self.__process_graph(self.__get_nnf(axiom),"#ALL")
 
+    def __consume_rbox_axiom(self,axiom):
+        '''
+            Permanently adds RBOX axiom to the graph.
+        '''
+        logger.debug(f"Applying RBOX axiom {axiom}")
+        self.__process_graph(self.__get_nnf(axiom),"#ALL")
+
     def is_consistent(self):
         return len(self.models)!=0
 
@@ -85,6 +92,8 @@ class Model(object):
         elif axiom.type=="TBOX":
             axiom=axiom.axiom
             self.__consume_tbox_axiom(axiom)
-
+        elif axiom.type=="RBOX":
+            axiom=axiom.axiom
+            self.__consume_rbox_axiom(axiom)
     def debug_print(self):
         self.pp.pprint(self.models)

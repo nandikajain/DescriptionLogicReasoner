@@ -44,3 +44,5 @@ def NNF(axiom):
     elif axiom.type=="SUBSUMPTION":
         return Or(NNF(Not(axiom.axiom1)),NNF(axiom.axiom2))
 
+    elif axiom.type=="SUBPROPOSITION":
+        return Or(NNF(Not(axiom.axiom1)),NNF(axiom.axiom2))

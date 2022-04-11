@@ -35,6 +35,8 @@ class Model(object):
         '''
         models=[]
         for model in self.models:
+            # print(model,axiom,individual)
+            # print("AJDVJDBV", model)
             models+=get_models(model,axiom,individual)
         return models
 
@@ -50,7 +52,11 @@ class Model(object):
         '''
         logger.debug(f"Applying {axiom}")
         axiom,node=self.axiom_split_methods[axiom.type](axiom)
-        self.__process_graph(self.__get_nnf(axiom),node)
+        if(axiom.type == "R_ASSERT"):
+            self.__process_graph(self.__get_nnf(axiom),node[0])
+            self.__process_graph(self.__get_nnf(axiom),node[1])
+        else:
+            self.__process_graph(self.__get_nnf(axiom),node)
 
     def __consume_tbox_axiom(self,axiom):
         '''

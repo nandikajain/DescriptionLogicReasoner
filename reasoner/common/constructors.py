@@ -68,13 +68,14 @@ class Concept(Symbol):
 
 class Role(Symbol):
     
-    def __init__(self,name,concept):
+    def __init__(self,name):
         super().__init__(name)
         self.name=name
-        self.concept=concept
+        self.type= "ROLE"
 
     def __str__(self):
-        return self.type+"."+self.name+"."+str(self.concept)
+        return self.type+"."+self.name
+
 
 class Some(Role):
     '''
@@ -82,13 +83,15 @@ class Some(Role):
     '''
     
     def __init__(self,name,concept):
-        super().__init__(name,concept)
+        super().__init__(name)
+        self.concept=concept
         self.type="SOME"
 
 class All(Role):
 
     def __init__(self,name,concept):
-        super().__init__(name,concept)
+        super().__init__(name)
+        self.concept=concept
         self.type="ALL"
 
 class Instance(Symbol):

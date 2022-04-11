@@ -13,6 +13,7 @@ namer=NodeNameGenerator()
 def update_and_check(label,label_set,consistency):
     if NNF(Not(label)) in label_set:
         consistency=False
+    # print(label)
     label_set.add(label)
     return label_set,consistency
 
@@ -25,8 +26,7 @@ def update_axioms(axiom,axiom_dict,label_set,consistent):
     return axiom_dict,label_set,consistent
 
 def create_axioms_struct():
-    # added ONLY to the model struct.
-    return {"AND":set(),"OR":set(),"SOME":set(),"ALL":set(), "ONLY":set()}
+    return {"AND":set(),"OR":set(),"SOME":set(),"ALL":set()}
 
 def run_expansion_loop(graph,node,models=None):
     '''
@@ -130,11 +130,16 @@ def is_model_consistent(models):
 
 def prime_graph(graph,axiom,node):
     axioms=graph[node][0]
+    print(graph, axioms,node, "Emd\n" )
     expanded=graph[node][1]
+    # print(expanded)
     if axiom.type not in axioms.keys():
+        # print(expanded)
         expanded.add(axiom)
+        # print(expanded)
     else:
         axioms[axiom.type].add(axiom)
+    # print(expanded)
     return graph,axiom
 
 def tree_search(models,node_list,node_index):
@@ -156,6 +161,7 @@ def get_models(graph,axiom,individual):
     else:
         graph=prepare_graph(graph,individual)
         graph,axiom=prime_graph(graph,axiom,individual)
+        # print("HHHHHHHHH",graph)
         models=run_expansion_loop(graph,individual)
 
     return models

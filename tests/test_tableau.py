@@ -45,5 +45,6 @@ class TestTableau(unittest.TestCase):
         models=get_models(self.pre_graph,axiom,"Aditya")
         #print(models)
 
+
 if __name__=="__main__":
     unittest.main()

@@ -7,7 +7,6 @@ from reasoner.knowledgebase.axioms import And,Or,Not,ClassAssertion,ABoxAxiom,Ro
 from reasoner.common.constructors import Concept,All,Some,Instance
 
 
-
 little_kb=[
 ABoxAxiom(ClassAssertion(Concept("Man"),Instance("Aditya"))),
 TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological")))]

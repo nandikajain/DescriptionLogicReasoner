@@ -109,6 +109,6 @@ class Model(object):
             axiom=axiom.axiom
             self.__consume_rbox_axiom(axiom)
     def debug_print(self):
-        self.pp.pprint(self.models)
         if self.models==[]:
             print('Inconsistent')
+        self.pp.pprint(self.models)

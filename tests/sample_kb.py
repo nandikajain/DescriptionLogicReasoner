@@ -62,3 +62,8 @@ ABoxAxiom(ClassAssertion(Concept("Student"), Instance("Gitansh-Jishnu-Nandika"))
 ABoxAxiom(ClassAssertion(Not(Concept("Eager")), Instance("Gitansh-Jishnu-Nandika"))),
 TBoxAxiom(Subsumption(Concept("Student"), Some("Attends", Concept("Lecture")))),
 TBoxAxiom(Subsumption(Concept("Lecture"), Some("AttendedBy", And(Concept("Lecture"), Concept("Lecture")))))]
+
+testBlocking=[ABoxAxiom(ClassAssertion(Concept("Bird"),Instance("tweety"))),
+TBoxAxiom(Subsumption(Concept("Human"), Some("hasParent", Concept("Human")))),
+ABoxAxiom(ClassAssertion(Not(Concept("Human")),Instance("tweety")) )
+]

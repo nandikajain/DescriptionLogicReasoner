@@ -51,5 +51,16 @@ class TestWithOntology(unittest.TestCase):
         self.kb.model.debug_print()
         print("=================================================================================================")
 
+    def testBlocking_kb(self):
+        print("=================================================================================================")
+        self.kb.load_from_list(testBlocking)
+        self.kb.run_sat()
+        print("KB is:\n")
+        self.kb.print_kb()
+        print("-------------------------------------")
+        print("Computed models are:\n")
+        self.kb.model.debug_print()
+        print("=================================================================================================")
+
 if __name__=="__main__":
     unittest.main()

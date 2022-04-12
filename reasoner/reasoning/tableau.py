@@ -128,7 +128,7 @@ def prime_graph(graph,axiom,node,node2=None):
     axioms=graph[node][0]
     expanded=graph[node][1]
     edges=graph[node][3]
-    print(axiom)
+    # print(axiom)
     if axiom.type not in axioms.keys():
         if axiom.type=='ROLE':
             if  node2!=None:
@@ -151,7 +151,7 @@ def tree_search(models,node_list,node_index):
     return tree_search(_models,node_list,node_index+1)
 
 def get_models(graph,axiom,individual,ind2=None):
-    print(';;;',axiom)
+    # print(';;;',axiom)
     if individual=="#ALL":
         if len(graph)==0:
             graph=prepare_graph(graph,namer.get_name())

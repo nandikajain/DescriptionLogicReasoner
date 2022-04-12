@@ -34,7 +34,7 @@ class Model(object):
             returns satisfiable ones.
         '''
         models=[]
-        print('***',axiom)
+        # print('***',axiom)
         for model in self.models:
             # print(model,axiom,individual)
             # print("AJDVJDBV", model)
@@ -53,14 +53,14 @@ class Model(object):
         '''
         logger.debug(f"Applying {axiom}")
         axiom,node=self.axiom_split_methods[axiom.type](axiom)
-        print(',,,',axiom)
+        # print(',,,',axiom)
         if(axiom.type == "ROLE"):
-            print('@@@',self.__get_nnf(axiom))
+            # print('@@@',self.__get_nnf(axiom))
             self.__process_graph(self.__get_nnf(axiom),node[1])
             self.__process_graph(self.__get_nnf(axiom),node[0],node[1])
 
         else:
-            print('@@@', self.__get_nnf(axiom))
+            # print('@@@', self.__get_nnf(axiom))
             self.__process_graph(self.__get_nnf(axiom),node)
 
     def __consume_tbox_axiom(self,axiom):
@@ -88,7 +88,7 @@ class Model(object):
         _type=axiom.type
         if _type=="ABOX":
             axiom,node=self.axiom_split_methods[axiom.axiom.type](axiom.axiom)
-        print('^^',axiom)
+        # print('^^',axiom)
         axiom=self.__get_nnf(axiom)
         return len(self._get_sat_models(axiom,node))!=0
 

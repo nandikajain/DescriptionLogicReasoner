@@ -13,46 +13,41 @@ class TestWithOntology(unittest.TestCase):
     def setUp(self):
         self.kb=KnowledgeBase()
 
-    # def test_small_kb(self):
-    #     self.kb.load_from_list(small_kb)
-    #     self.kb.run_sat()
-    #     print("KB is.")
-    #     self.kb.print_kb()
-    #     print("Computed models are.")
-    #     self.kb.model.debug_print()
-
-    # def test_little_kb(self):
-    #     self.kb.load_from_list(little_kb)
-    #     self.kb.run_sat()
-    #     print("KB is.")
-    #     self.kb.print_kb()
-    #     print("Computed models are.")
-    #     self.kb.model.debug_print()
-
-    # def test_simple_kb(self):
-    #     self.kb.load_from_list(simple_kb)
-    #     self.kb.run_sat()
-    #     print("KB is.")
-    #     self.kb.print_kb()
-    #     print("Computed models are.")
-    #     self.kb.model.debug_print()
-
-    # def test_inconsistent_kb(self):
-    #     self.kb.load_from_list(sample)
-    #     self.kb.run_sat()
-    #     print("KB is.")
-    #     self.kb.print_kb()
-    #     print("Computed models are.")
-    #     self.kb.model.debug_print()
-
-
-    def test_another_kb(self):
+    def test1_kb(self):
+        self.kb.load_from_list(test1)
+        self.kb.run_sat()
+        print("KB is.")
+        self.kb.print_kb()
+        print("Computed models are.")
+        self.kb.model.debug_print()
+        print()
+        
+    def test2_kb(self):
+        self.kb.load_from_list(test2)
+        self.kb.run_sat()
+        print("KB is.")
+        self.kb.print_kb()
+        print("Computed models are.")
+        self.kb.model.debug_print()
+        print()
+        
+    def test3_kb(self):
         self.kb.load_from_list(test3)
         self.kb.run_sat()
         print("KB is.")
         self.kb.print_kb()
         print("Computed models are.")
         self.kb.model.debug_print()
+        print()
+        
+    def test4_kb(self):
+        self.kb.load_from_list(test4)
+        self.kb.run_sat()
+        print("KB is.")
+        self.kb.print_kb()
+        print("Computed models are.")
+        self.kb.model.debug_print()
+        print()
 
 if __name__=="__main__":
     unittest.main()

@@ -27,6 +27,20 @@ def update_axioms(axiom,axiom_dict,label_set,consistent):
 def create_axioms_struct():
     return {"AND":set(),"OR":set(),"SOME":set(),"ALL":set()}
 
+def checkBlocking(models):
+    modelKeys = models[len(models)-1].keys()
+    # stringModelKeys = [str(i) for i in modelKeys]
+    for i in modelKeys:
+        dict = (models[len(models)-1][i][3])
+        vals = dict.values()
+        for j in vals:
+            if('no_name:' in j):
+                if(dict[j][1].issubset(dict[i][i])):
+                    return True
+    return False
+    # if(models[len(models)-1])
+
+
 def run_expansion_loop(graph,node,models=None):
     '''\
         Runs expansion rules according to tableau algorithm.
@@ -100,6 +114,8 @@ def run_expansion_loop(graph,node,models=None):
     if (len(axioms["AND"])==0) and (len(axioms["OR"])==0) and (len(axioms["SOME"])==0) and (len(axioms["ALL"])==0):
         if is_graph_consistent(graph):
             models.append(graph)
+        return models
+    elif(checkBlocking(models)):
         return models
     else:
         return run_expansion_loop(graph,node,models)

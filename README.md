@@ -1,188 +1,29 @@
-# Athene - A description logic reasoner.
-=========================================
+# Description Logic Reasoner
 
-## Introduction.
+A description logic reasoner made by extending the naive tableau implementation that can be found [here](https://github.com/dityas/Athene). Made as a part of Semantic Web course offered at IIITD (CSE632).
+It takes in the ALC axioms and outputs whether the axiom is consistent or not.
 
-Athene is a description logic reasoner written completely in native python. The current version is a beta and only supports ALC. But it can easily be extended by adding
-tableau rules. Athene was written with the intent of having a readable educational semantic reasoner which can be easily extended for various description logics. 
+## Running Instructions
+1. Clone this repository using the command: `git clone https://github.com/nandikajain/DescriptionLogicReasoner.git`
+2. cd into the directory by ```cd DescriptionLogicReasoner```.
+3. cd to tests directory by ```cd tests``` and add the ALC axioms of your choice in sample_kb.py and include the tests in test_ontology.py.
+4. Run the tests by ```python test_ontology.py``` to get if the ALC axioms are consistent or not.
 
-Currently supported reasoning services are:
+## Functionalities added
+- We have extended the codebase’s implementation to role assertion. Whenever there is a role between a and b, an edge is created between them which is given the role label [reasoning/tableau.py, reasoning/nnf.py, knowledgebase/axioms.py, knowledgebase/model.py, common/constructors.py].
+- We updated the Role constructor and and Role Assertion axioms in order to fulfill their functionalities. Then we made adjustments to the axiom several functions that handle the axiom resolution. In tableau.py we made necessary changes so that the edge between
+the nodes are properly added.
+- Corrected incorrectly written tests in test_axioms.py.
+- We also added subproposition (subproperty) rules and relevant test cases for them.
 
-* Consistency check. (Reports consistency of the ontology)
+### Implementing Blocking technique
+We extended our implementation to the blocking technique in the tableau. Only a no_name node would be the one which would block the tableau, since we are adding
+new nodes with no_name Node, and in order to block the tableau to go till infinity, we block the Nodes with the name no_name. We checked that the node should be a node
+with name as no_name{x} and that this node should be a subset of the previous nodes in the model present.
+A node with a label x is blocked by a node with label y if:<br>
+> <i>x is a variable but not an individual</i> <br>
+> <i>y is an ancestor of x, and L(x) ⊆ L(y)</i><br>
+> <i>or an ancestor of x is blocked</i>
 
-* Satisfiability check. (Reports if the current axiom satisfies the ontology without actually adding it.)
 
-The core tableau reasoning procedures are written in procedural python instead of object oriented code to support optimizations and multiprocessing.
 
-## Tests.
-Athene is still not a full feldged reasoner. For instance it does not yet support role axioms in the TBox. Below are the results of a few tests on small ontologies.
-
-### Test 1.
-
-###### Ontology.
-```python
-ABoxAxiom(ClassAssertion(Concept("Man"),Instance("Aditya")))
-TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological")))
-```
-
-###### Results.
-
-KB: 
-```python
-[ASSERT Aditya IS A Man, ALL Man ARE Biological]
-```
-
-Output:
-```python
-Computed models are.
-[ { 'Aditya': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {Man, Biological},
-                True,
-                {})}]
-```
-
-### Test 2.
-
-###### Ontology.
-```python
-ABoxAxiom(ClassAssertion(Concept("Man"),Instance("Aditya")))
-ABoxAxiom(ClassAssertion(Concept("Machine"),Instance("Icarus")))
-TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological")))
-```
-
-###### Results.
-
-KB: 
-```python
-[ASSERT Icarus IS A Machine, ASSERT Aditya IS A Man, ALL Man ARE Biological]
-```
-
-Output:
-```python
-Computed models are.
-[ { 'Aditya': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {Man, Biological},
-                True,
-                {}),
-    'Icarus': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {NOT Man, Machine},
-                True,
-                {})},
-  { 'Aditya': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {Man, Biological},
-                True,
-                {}),
-    'Icarus': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {Biological, Machine},
-                True,
-                {})}]
-
-```
-
-### Test 3.
-
-###### Ontology.
-```python
-ABoxAxiom(ClassAssertion(Concept("Man"),Instance("Aditya")))
-ABoxAxiom(ClassAssertion(Concept("Machine"),Instance("Icarus")))
-TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological")))
-TBoxAxiom(Subsumption(Concept("Machine"),Not(Concept("Man"))))
-TBoxAxiom(Subsumption(Concept("Biological"),Concept("Man")))
-```
-
-###### Results.
-
-KB: 
-```python
-[ ASSERT Icarus IS A Machine,
-  ASSERT Aditya IS A Man,
-  ALL Man ARE Biological,
-  ALL Machine ARE NOT Man,
-  ALL Biological ARE Man]
-```
-
-Output:
-```python
-Computed models are.
-[ { 'Aditya': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {NOT Machine, Man, Biological},
-                True,
-                {}),
-    'Icarus': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {NOT Biological, NOT Man, Machine},
-                True,
-                {})}]
-```
-
-### Test 4.
-
-###### Ontology.
-```python
-
-ABoxAxiom(ClassAssertion(Concept("Man"),Instance("Aditya")))
-ABoxAxiom(ClassAssertion(And(Concept("Machine"),Concept("Man")),Instance("Adam")))
-TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological")))
-TBoxAxiom(Subsumption(Concept("Machine"),Not(Concept("Man"))))
-TBoxAxiom(Subsumption(Concept("Biological"),Concept("Man")))
-```
-
-###### Results.
-
-KB: 
-```python
-[ ASSERT Aditya IS A Man,
-  ASSERT Adam IS A (Machine AND Man),
-  ALL Man ARE Biological,
-  ALL Machine ARE NOT Man,
-  ALL Biological ARE Man]
-
-```
-
-Output:
-```python
-Computed models are.
-[]
-```
-
-### Test 5.
-
-###### Ontology.
-```python
-ABoxAxiom(ClassAssertion(Concept("Man"),Instance("Aditya")))
-ABoxAxiom(ClassAssertion(And(Concept("Machine"),Concept("Man")),Instance("Adam")))
-TBoxAxiom(Subsumption(Concept("Man"),Concept("Biological")))
-TBoxAxiom(Subsumption(Concept("Biological"),Concept("Man")))
-TBoxAxiom(Subsumption(And(Concept("Machine"),Concept("Man")),Concept("Augmented")))
-```
-
-###### Results.
-
-KB: 
-```python
-[ ASSERT Adam IS A (Machine AND Man),
-  ASSERT Aditya IS A Man,
-  ALL Man ARE Biological,
-  ALL (Machine AND Man) ARE Augmented,
-  ALL Biological ARE Man]
-```
-
-Output:
-```python
-Computed models are.
-[ { 'Adam': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-              {Augmented, Man, Biological, Machine},
-              True,
-              {}),
-    'Aditya': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {NOT Machine, Man, Biological},
-                True,
-                {})},
-  { 'Adam': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-              {Augmented, Man, Biological, Machine},
-              True,
-              {}),
-    'Aditya': ( {'ALL': set(), 'AND': set(), 'OR': set(), 'SOME': set()},
-                {Augmented, Man, Biological},
-                True,
-                {})}]
-```
